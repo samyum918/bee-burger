@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 const Landing = (props) => {
   return (
-    <div className="flex justify-center items-center w-full">
-      <div className="h-80vh w-4/5 flex flex-col justify-between items-center">
+    <div className="mt-20 flex justify-center items-center w-full">
+      <div className="h-75vh w-4/5 flex flex-col justify-between items-center">
         <img
           src="/img/bee_burger_logo.jpg"
           alt="bee_burger_logo"

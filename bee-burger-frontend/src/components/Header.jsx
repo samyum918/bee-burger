@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Header = (props) => {
   return (
-    <div className="absolute top-12 flex justify-between w-4/5 mx-10">
+    <div className="mt-12 flex justify-between w-4/5 mx-10">
       <div className="flex justify-between items-center">
         <Link to={props.back}>
           <img src="/img/back_icon.png" alt="back_icon" />

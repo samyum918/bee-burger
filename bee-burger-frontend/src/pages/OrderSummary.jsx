@@ -5,7 +5,7 @@ const OrderSummary = () => {
     <>
       <Header seatNo="12B" back="/food-items" />
 
-      <div className="mt-32 mb-8 w-full px-4 bg-black">
+      <div className="mt-20 pb-8 w-full px-4 bg-black menu-bg-min-height">
         <div className="border-b border-gray-700 flex justify-center items-center text-title-light-yellow">
           <div className="my-4 w-full flex justify-between font-semibold">
             <div className="flex">
@@ -16,7 +16,7 @@ const OrderSummary = () => {
           </div>
         </div>
 
-        <div className="mt-6 bg-food-item-bg px-2 pb-2 text-title-light-yellow rounded-2xl">
+        <div className="my-6 bg-food-item-bg px-2 pb-2 text-title-light-yellow rounded-2xl">
           <div className="pt-1 pb-2">
             <div className="pt-2 flex">
               <div>

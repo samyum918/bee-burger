@@ -6,19 +6,19 @@ const FoodItems = () => {
     <>
       <Header seatNo="12B" back="/" />
 
-      <div className="mt-32 mb-8 w-full px-4 bg-black">
+      <div className="mt-20 pb-8 w-full px-4 bg-black menu-bg-min-height">
         <div className="border-b border-gray-700">
           <ul className="w-full flex justify-between items-center text-title-light-yellow">
-            <li data-navbar="category" class="p-4">
+            <li data-navbar="category" className="p-4">
               Set
             </li>
-            <li data-navbar="category" class="p-4 active">
+            <li data-navbar="category" className="p-4 active">
               Burger
             </li>
-            <li data-navbar="category" class="p-4">
+            <li data-navbar="category" className="p-4">
               Snack
             </li>
-            <li data-navbar="category" class="p-4">
+            <li data-navbar="category" className="p-4">
               Drink
             </li>
           </ul>

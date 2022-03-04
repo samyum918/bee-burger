@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-.h-80vh {
-  height: 80vh;
+.h-75vh {
+  height: 75vh;
 }
 
 .bg-burger-img {
@@ -22,6 +22,10 @@
   background-image: url("../public/img/seat_no_bg.png");
   width: 332px;
   height: 173px;
+}
+
+.menu-bg-min-height {
+  min-height: 620px;
 }
 
 .minus-icon {

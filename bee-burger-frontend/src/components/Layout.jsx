@@ -7,7 +7,7 @@ import { Routes, Route } from "react-router-dom";
 const Layout = () => {
   return (
     <div className="bg-burger-img bg-no-repeat min-h-screen z-0 m-auto bg-black flex">
-      <div className="bg-filter-img bg-no-repeat z-10 w-full flex">
+      <div className="bg-filter-img bg-no-repeat z-10 w-full flex flex-col">
         <Routes>
           <Route exact path="/" element={<Landing seatNo="12B" />} />
           <Route exact path="/food-items" element={<FoodItems />} />

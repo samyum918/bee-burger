@@ -6,7 +6,7 @@ const ConfirmOrder = () => {
     <>
       <Header seatNo="12B" back="/food-items" />
 
-      <div className="mt-32 mb-8 w-full px-4 bg-black">
+      <div className="mt-20 pb-8 w-full px-4 bg-black menu-bg-min-height">
         <div className="border-b border-gray-700 flex justify-center items-center text-title-light-yellow">
           <div className="flex my-4">
             <img src="/img/cart_icon.png" alt="cart_icon" />
@@ -14,7 +14,7 @@ const ConfirmOrder = () => {
           </div>
         </div>
 
-        <div className="mt-6 bg-food-item-bg px-2 pb-2 text-title-light-yellow rounded-2xl">
+        <div className="my-6 bg-food-item-bg px-2 pb-2 text-title-light-yellow rounded-2xl">
           <div className="pt-1 pb-2">
             <div className="pt-2 flex">
               <div>
@@ -149,7 +149,7 @@ const ConfirmOrder = () => {
         <Link className="w-full" to="/order-summary">
           <button
             type="button"
-            className="mt-20 mb-8 w-full rounded-xl font-bold text-black bg-title-light-yellow h-11"
+            className="mt-20 w-full rounded-xl font-bold text-black bg-title-light-yellow h-11"
           >
             Confirm order
           </button>
