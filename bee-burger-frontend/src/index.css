@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.h-80vh {
+  height: 80vh;
+}
+
+.bg-burger-img {
+  background-image: url("../public/img/bg_burger.png");
+  background-position: center top;
+  max-width: 428px;
+}
+
+.bg-filter-img {
+  background-image: url("../public/img/bg_filter.png");
+  background-position: center top;
+  max-width: 428px;
+}
+
+.seat-no-bg-img {
+  background-image: url("../public/img/seat_no_bg.png");
+  width: 332px;
+  height: 173px;
+}
+
+.minus-icon {
+  padding-top: 0.842rem;
+  padding-bottom: 0.842rem;
+  padding-left: 0.47rem;
+  padding-right: 0.47rem;
+}
+
+[data-navbar="category"].active {
+  @apply border-b-2 border-title-light-yellow font-bold;
+}

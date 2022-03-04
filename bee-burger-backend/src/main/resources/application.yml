@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/pos?useSSL=false&serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
+    username: mysql_user
+    password: 123456
+    initialization-mode: always
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  h2:
+    console:
+      enabled: false
+
+server:
+  port: 8091
