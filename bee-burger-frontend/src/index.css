@@ -35,6 +35,10 @@
   padding-right: 0.47rem;
 }
 
-[data-navbar="category"].active {
+[data-choice-group="food-category"].active {
   @apply border-b-2 border-title-light-yellow font-bold;
+}
+
+[data-choice-group="food-preference"].active {
+  @apply bg-food-item-price text-black;
 }
