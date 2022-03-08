@@ -21,23 +21,9 @@ public class FoodPreference extends BaseModel {
     @Column(name = "preference_seq")
     private Integer preferenceSeq;
 
-    @Column(name = "content")
-    private String content;
+    @Column(name = "question")
+    private String question;
 
     @Column(name = "update_time")
     private LocalDateTime updateTime;
-
-    @OneToMany(mappedBy = "foodPreference", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FoodPreferenceDetail> foodPreferenceDetailList = new ArrayList<>();
-
-
-    public void addFoodPreferenceDetail(FoodPreferenceDetail foodPreferenceDetail) {
-        foodPreferenceDetailList.add(foodPreferenceDetail);
-        foodPreferenceDetail.setFoodPreference(this);
-    }
-
-    public void removeFoodPreferenceDetail(FoodPreferenceDetail foodPreferenceDetail) {
-        foodPreferenceDetailList.remove(foodPreferenceDetail);
-        foodPreferenceDetail.setFoodPreference(null);
-    }
 }

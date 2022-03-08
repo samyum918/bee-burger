@@ -1,6 +1,16 @@
+import { useContext } from "react";
 import Header from "../components/Header";
+import { SubmittedOrderContext } from "../context/Context";
 
 const OrderSummary = () => {
+  const { submittedOrder } = useContext(SubmittedOrderContext);
+
+  function getOptionClasses(selected: boolean) {
+    let classes =
+      "rounded-lg border border-food-item-price px-4 mr-2 mb-2 w-fit";
+    return selected ? classes + " active" : classes;
+  }
+
   return (
     <>
       <Header seatNo="12B" backUrl="/food-items" />
@@ -12,70 +22,64 @@ const OrderSummary = () => {
               <img src="/img/note.png" alt="note" />
               <div className="ml-2">Order Summary</div>
             </div>
-            <div>Total Bill: $60.00</div>
+            <div>
+              Total Bill: $
+              {submittedOrder.reduce((n, { totalPrice }) => n + totalPrice, 0)}
+            </div>
           </div>
         </div>
 
         <div className="my-6 bg-food-item-bg px-2 pb-2 text-title-light-yellow rounded-2xl">
-          <div className="pt-1 pb-2">
-            <div className="pt-2 flex">
-              <div>
-                <img
-                  src="/img/burger1.png"
-                  width="55"
-                  height="55"
-                  alt="burger1"
-                />
+          {submittedOrder.map((order) => (
+            <div className="pt-1 pb-2">
+              <div className="pt-2 flex">
+                <div>
+                  <img
+                    src={order.img}
+                    width="55"
+                    height="55"
+                    alt={order.name}
+                  />
+                </div>
+                <div className="ml-2">
+                  <div>{order.name}</div>
+                  <div className="opacity-40 text-xs mt-1">
+                    {order.description}
+                  </div>
+                </div>
               </div>
-              <div className="ml-2">
-                <div>Burger1</div>
-                <div className="opacity-40 text-xs mt-1">
-                  abcde abcde abcde abcde abcde
+
+              <div className="mt-2 pl-2 pr-4 pb-2 mb-3 border-b border-gray-700 opacity-40 text-sm">
+                <div className="flex justify-between">
+                  <div>Product Price</div>
+                  <div>${order.price}</div>
+                </div>
+                <div>
+                  {order.foodPreferences &&
+                    order.foodPreferences.map((foodPreference) => (
+                      <div className="mb-3" key={foodPreference.id}>
+                        <div className="mb-3">
+                          <div className="mb-2">{foodPreference.question}</div>
+                          <div className="flex flex-wrap text-food-item-price text-sm">
+                            {foodPreference.options.map((option) => (
+                              <div
+                                className={getOptionClasses(option.selected)}
+                                data-choice-group="food-preference"
+                                key={option.id}
+                              >
+                                {option.optionContent}
+                                {option.additionalPrice > 0 &&
+                                  ` $${option.additionalPrice}`}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>
-
-            <div className="mt-2 pl-2 pr-4 pb-2 mb-3 border-b border-gray-700">
-              <div className="flex justify-between opacity-40 text-sm">
-                <div>GST Tax</div>
-                <div>$1</div>
-              </div>
-              <div className="flex justify-between opacity-40 text-sm">
-                <div>Product Price</div>
-                <div>$29</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="pt-1 pb-2">
-            <div className="pt-2 flex">
-              <div>
-                <img
-                  src="/img/burger2.png"
-                  width="55"
-                  height="55"
-                  alt="burger2"
-                />
-              </div>
-              <div className="ml-2">
-                <div>Burger2</div>
-                <div className="opacity-40 text-xs mt-1">
-                  abcde abcde abcde abcde abcde
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-2 pl-2 pr-4 pb-2 mb-3 border-b border-gray-700">
-              <div className="flex justify-between opacity-40 text-sm">
-                <div>GST Tax</div>
-                <div>$1</div>
-              </div>
-              <div className="flex justify-between opacity-40 text-sm">
-                <div>Product Price</div>
-                <div>$29</div>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </>

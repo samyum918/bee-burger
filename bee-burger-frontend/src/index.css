@@ -42,3 +42,7 @@
 [data-choice-group="food-preference"].active {
   @apply bg-food-item-price text-black;
 }
+
+[data-edit="cart-item"].active {
+  @apply opacity-100;
+}

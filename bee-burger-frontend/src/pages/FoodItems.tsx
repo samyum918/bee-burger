@@ -1,22 +1,62 @@
 import Header from "../components/Header";
-import { Link } from "react-router-dom";
 import FoodItem from "../components/FoodItem";
-import { useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
+import { CartContext } from "../context/Context";
+import { CategoryIf, FoodItemIf } from "../common/types";
+import foodItemsService from "../services/foodItemsService";
+import httpService from "../services/httpService";
+import { useNavigate } from "react-router-dom";
+import { CartItemIf } from "./../common/types";
 
-const FoodItems = () => {
-  const [foodCategories, setFoodCategories] = useState<string[]>([
-    "Set",
-    "Burger",
-    "Snack",
-    "Drink",
-  ]);
-  const [activeFoodCategory, setActiveFoodCategory] = useState(0);
+interface FoodItemsProps {}
+
+const FoodItems: FC<FoodItemsProps> = () => {
+  const [foodCategories, setFoodCategories] = useState<CategoryIf[]>([]);
+  const [activeFoodCategory, setActiveFoodCategory] = useState(1);
+  const [foodItems, setFoodItems] = useState<FoodItemIf[]>([]);
+  const navigate = useNavigate();
+  const { addCartItem } = useContext(CartContext);
+
+  useEffect(() => {
+    fetchCatergories();
+    fetchFoodItems();
+  }, []);
+
+  async function fetchCatergories() {
+    try {
+      const response = await foodItemsService.getCatergories();
+      setFoodCategories(response.data);
+    } catch (ex) {
+      httpService.handleApiError(ex);
+    }
+  }
+
+  async function fetchFoodItems(catId: number = 1) {
+    try {
+      const response = await foodItemsService.getFoodItemsByCategory(catId);
+      let foodItemList: FoodItemIf[] = response.data;
+      if (foodItemList) {
+        foodItemList.forEach((foodItem) => {
+          if (foodItem.foodPreferences) {
+            foodItem.foodPreferences.forEach((foodPreference) => {
+              foodPreference.options.forEach((option) => {
+                option.selected = false;
+              });
+            });
+          }
+        });
+      }
+      setFoodItems(foodItemList);
+    } catch (ex) {
+      httpService.handleApiError(ex);
+    }
+  }
 
   function getCatergoryItems(e: React.MouseEvent<HTMLElement>) {
-    const categoryEle: HTMLElement = e.currentTarget;
-    setActiveFoodCategory(
-      parseInt(categoryEle.getAttribute("data-index") || "0")
-    );
+    const currentEle: HTMLElement = e.currentTarget;
+    const catId = parseInt(currentEle.getAttribute("data-entity-id") || "1");
+    setActiveFoodCategory(catId);
+    fetchFoodItems(catId);
   }
 
   function getCategoryClasses(currentFoodCategory: number) {
@@ -26,6 +66,43 @@ const FoodItems = () => {
       : classes;
   }
 
+  function selectFoodPreference(
+    item: FoodItemIf,
+    foodPreferenceIndex: number,
+    optionIndex: number
+  ) {
+    const foodItemsCopy = [...foodItems];
+    const index = foodItemsCopy.indexOf(item);
+    let foodPreferences = foodItemsCopy[index].foodPreferences;
+    if (foodPreferences) {
+      let options = foodPreferences[foodPreferenceIndex].options;
+      if (options) {
+        options.forEach((option) => {
+          option.selected = false;
+        });
+        options[optionIndex].selected = true;
+      }
+    }
+
+    setFoodItems(foodItemsCopy);
+  }
+
+  function addToCart(item: FoodItemIf) {
+    const foodItem = foodItems[foodItems.indexOf(item)];
+    const cartItem: CartItemIf = {
+      foodId: foodItem.id,
+      name: foodItem.name,
+      description: foodItem.description,
+      price: foodItem.price,
+      img: foodItem.img,
+      quantity: 1,
+      totalPrice: foodItem.price,
+      foodPreferences: foodItem.foodPreferences,
+    };
+    addCartItem(cartItem);
+    navigate("/confirm-order");
+  }
+
   return (
     <>
       <Header seatNo="12B" backUrl="/" />
@@ -33,56 +110,28 @@ const FoodItems = () => {
       <div className="mt-20 pb-8 w-full px-4 bg-black menu-bg-min-height">
         <div className="border-b border-gray-700">
           <ul className="w-full flex justify-between items-center text-title-light-yellow">
-            {foodCategories.map((foodCategory, index) => (
+            {foodCategories.map((foodCategory) => (
               <li
-                className={getCategoryClasses(index)}
+                className={getCategoryClasses(foodCategory.id)}
                 data-choice-group="food-category"
-                data-index={index}
-                key={index}
+                data-entity-id={foodCategory.id}
+                key={foodCategory.id}
                 onClick={(e) => getCatergoryItems(e)}
               >
-                {foodCategory}
+                {foodCategory.name}
               </li>
             ))}
           </ul>
         </div>
 
-        <Link to="/confirm-order">
+        {foodItems.map((foodItem) => (
           <FoodItem
-            name="Bee Classic"
-            description="abcde abcde abcde abcde abcde"
-            price="59.00"
-            img="/img/burger1.png"
+            key={foodItem.id}
+            foodItem={foodItem}
+            selectFoodPreference={selectFoodPreference}
+            addToCart={addToCart}
           />
-        </Link>
-
-        <FoodItem
-          name="Giga Bites"
-          description="abcde abcde abcde abcde abcde"
-          price="92.00"
-          img="/img/burger2.png"
-        />
-
-        <FoodItem
-          name="Burger3"
-          description="abcde abcde abcde abcde abcde"
-          price="59.00"
-          img="/img/burger3.png"
-        />
-
-        <FoodItem
-          name="Burger4"
-          description="abcde abcde abcde abcde abcde"
-          price="59.00"
-          img="/img/burger4.png"
-        />
-
-        <FoodItem
-          name="Burger5"
-          description="abcde abcde abcde abcde abcde"
-          price="59.00"
-          img="/img/burger5.png"
-        />
+        ))}
       </div>
     </>
   );

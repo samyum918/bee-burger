@@ -1,62 +1,67 @@
 import Header from "../components/Header";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import ConfirmOrderItem from "../components/ConfirmOrderItem";
-
-export interface ConfirmOrderItemObj {
-  name: string;
-  description: string;
-  price: string;
-  img: string;
-  quantity: number;
-  totalPrice: string;
-}
+import { useContext, useEffect } from "react";
+import CartItem from "../components/CartItem";
+import { CartItemIf } from "../common/types";
+import { CartContext, SubmittedOrderContext } from "../context/Context";
+import { useNavigate } from "react-router-dom";
 
 const ConfirmOrder = () => {
-  const [confirmOrderItems, setConfirmOrderItems] = useState<
-    ConfirmOrderItemObj[]
-  >([
-    {
-      name: "Burger1",
-      description: "abcde abcde abcde abcde abcde",
-      price: "30",
-      img: "/img/burger1.png",
-      quantity: 1,
-      totalPrice: "30",
-    },
-    {
-      name: "Burger2",
-      description: "abcde abcde abcde abcde abcde",
-      price: "30",
-      img: "/img/burger2.png",
-      quantity: 1,
-      totalPrice: "30",
-    },
-  ]);
+  const { cart, updateCartItem, deleteCartItem } = useContext(CartContext);
+  const { submitCart } = useContext(SubmittedOrderContext);
+  const navigate = useNavigate();
 
-  useEffect(() => {});
+  useEffect(() => {}, []);
 
-  function addQuantity(item: ConfirmOrderItemObj) {
-    const confirmOrderItemsCopy = [...confirmOrderItems];
-    const index = confirmOrderItemsCopy.indexOf(item);
-    confirmOrderItemsCopy[index].quantity++;
-    setConfirmOrderItems(confirmOrderItemsCopy);
+  function addQuantity(item: CartItemIf) {
+    const cartCopy = [...cart];
+    const index = cartCopy.indexOf(item);
+    cartCopy[index].quantity++;
+    cartCopy[index].totalPrice =
+      cartCopy[index].price * cartCopy[index].quantity;
+    updateCartItem(index, cartCopy[index]);
   }
 
-  function substractQuantity(item: ConfirmOrderItemObj) {
-    const confirmOrderItemsCopy = [...confirmOrderItems];
-    const index = confirmOrderItemsCopy.indexOf(item);
-    if (confirmOrderItemsCopy[index].quantity > 1) {
-      confirmOrderItemsCopy[index].quantity--;
-      setConfirmOrderItems(confirmOrderItemsCopy);
+  function substractQuantity(item: CartItemIf) {
+    const cartCopy = [...cart];
+    const index = cartCopy.indexOf(item);
+    if (cartCopy[index].quantity > 1) {
+      cartCopy[index].quantity--;
+      cartCopy[index].totalPrice =
+        cartCopy[index].price * cartCopy[index].quantity;
+      updateCartItem(index, cartCopy[index]);
     }
   }
 
-  function deleteItem(item: ConfirmOrderItemObj) {
-    const confirmOrderItemsCopy = [...confirmOrderItems];
-    const index = confirmOrderItemsCopy.indexOf(item);
-    confirmOrderItemsCopy.splice(index, 1);
-    setConfirmOrderItems(confirmOrderItemsCopy);
+  function deleteItem(item: CartItemIf) {
+    const cartCopy = [...cart];
+    const index = cartCopy.indexOf(item);
+    deleteCartItem(index);
+  }
+
+  function selectFoodPreference(
+    item: CartItemIf,
+    foodPreferenceIndex: number,
+    optionIndex: number
+  ) {
+    const cartCopy = [...cart];
+    const index = cartCopy.indexOf(item);
+    let foodPreferences = cartCopy[index].foodPreferences;
+    if (foodPreferences) {
+      let options = foodPreferences[foodPreferenceIndex].options;
+      if (options) {
+        options.forEach((option) => {
+          option.selected = false;
+        });
+        options[optionIndex].selected = true;
+      }
+    }
+
+    updateCartItem(index, cartCopy[index]);
+  }
+
+  function confirmOrder() {
+    submitCart();
+    navigate("/order-summary");
   }
 
   return (
@@ -72,12 +77,13 @@ const ConfirmOrder = () => {
         </div>
 
         <div className="mt-6 bg-food-item-bg px-2 pb-2 text-title-light-yellow rounded-2xl">
-          {confirmOrderItems.map((item, index) => (
-            <ConfirmOrderItem
+          {cart.map((item, index) => (
+            <CartItem
               item={item}
               addQuantity={addQuantity}
               substractQuantity={substractQuantity}
               deleteItem={deleteItem}
+              selectFoodPreference={selectFoodPreference}
               key={index}
             />
           ))}
@@ -86,18 +92,17 @@ const ConfirmOrder = () => {
         <div className="bg-title-light-yellow/30 text-title-light-yellow rounded-2xl">
           <div className="flex justify-between items-center pl-5 pr-6 py-4 text-lg font-semibold">
             <div>Total</div>
-            <div>$60.00</div>
+            <div>${cart.reduce((n, { totalPrice }) => n + totalPrice, 0)}</div>
           </div>
         </div>
 
-        <Link className="w-full" to="/order-summary">
-          <button
-            type="button"
-            className="mt-20 w-full rounded-xl font-bold text-black bg-title-light-yellow h-11"
-          >
-            Confirm order
-          </button>
-        </Link>
+        <button
+          type="button"
+          className="mt-20 w-full rounded-xl font-bold text-black bg-title-light-yellow h-11"
+          onClick={confirmOrder}
+        >
+          Confirm order
+        </button>
       </div>
     </>
   );

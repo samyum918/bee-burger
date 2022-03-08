@@ -15,10 +15,6 @@ public class Customer extends BaseModel {
     @Column(name = "customer_id")
     private Integer customerId;
 
-    @OneToOne
-    @JoinColumn(name = "restaurant_branch_id")
-    private RestaurantBranch restaurantBranch;
-
     @Column(name = "seat_no")
     private String seatNo;
 

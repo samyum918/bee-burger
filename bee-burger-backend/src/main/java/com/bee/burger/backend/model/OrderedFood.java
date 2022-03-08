@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "order_food")
-public class OrderFood extends BaseModel {
+public class OrderedFood extends BaseModel {
     @OneToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;

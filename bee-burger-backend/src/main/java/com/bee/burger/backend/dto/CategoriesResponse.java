@@ -4,12 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FoodPreferenceRequest {
-    @NotNull(message = "Food Id cannot be null.")
-    private Integer foodId;
+public class CategoriesResponse {
+    private Integer id;
+    private String name;
 }

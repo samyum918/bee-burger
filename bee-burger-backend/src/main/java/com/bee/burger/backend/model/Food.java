@@ -16,8 +16,11 @@ public class Food extends BaseModel {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "header_img")
-    private String headerImg;
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "img")
+    private String img;
 
     @Column(name = "price")
     private BigDecimal price = BigDecimal.ZERO;

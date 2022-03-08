@@ -9,13 +9,13 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "order_food_detail")
-public class OrderFoodDetail extends BaseModel {
+@Table(name = "order_food_option")
+public class OrderedFoodOption extends BaseModel {
     @ManyToOne
     @JoinColumn(name="order_food_id")
-    private OrderFood orderFood;
+    private OrderedFood orderFood;
 
     @OneToOne
-    @JoinColumn(name = "food_preference_detail_id")
-    private FoodPreferenceDetail foodPreferenceDetail;
+    @JoinColumn(name = "food_preference_option_id")
+    private FoodPreferenceOption foodPreferenceOption;
 }
