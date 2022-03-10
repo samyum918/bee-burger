@@ -1,6 +1,7 @@
 package com.bee.burger.backend.model;
 
 import com.bee.burger.backend.model.base.BaseModel;
+import com.bee.burger.backend.model.base.BaseModelUUID;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,10 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "customer")
-public class Customer extends BaseModel {
-    @Column(name = "customer_id")
-    private Integer customerId;
-
+public class Customer extends BaseModelUUID {
     @Column(name = "seat_no")
     private String seatNo;
 

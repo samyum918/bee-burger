@@ -30,6 +30,7 @@ export interface CartItemIf {
   name: string;
   description: string;
   price: number;
+  additionalPrice: number;
   img: string;
   quantity: number;
   totalPrice: number;

@@ -6,6 +6,7 @@ interface CartContextIf {
   addCartItem(item: CartItemIf): void;
   updateCartItem(index: number, item: CartItemIf): void;
   deleteCartItem(index: number): void;
+  emptyCartItem(): void;
 }
 
 interface SubmittedOrderIf {
@@ -18,6 +19,7 @@ const CartContext = React.createContext<CartContextIf>({
   addCartItem: (item: CartItemIf) => {},
   updateCartItem: (index: number, item: CartItemIf) => {},
   deleteCartItem: (index: number) => {},
+  emptyCartItem: () => {},
 });
 
 const SubmittedOrderContext = React.createContext<SubmittedOrderIf>({

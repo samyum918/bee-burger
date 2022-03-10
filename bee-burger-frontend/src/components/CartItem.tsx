@@ -27,18 +27,34 @@ const CartItem: FC<CartItemProps> = (props) => {
 
   function getOptionClasses(selected: boolean) {
     let classes =
-      "rounded-lg border border-food-item-price px-4 mr-2 mb-2 w-fit cursor-pointer";
+      "rounded-lg border border-food-item-price px-4 mr-2 mb-2 w-fit";
     return selected ? classes + " active" : classes;
+  }
+
+  function selectFoodPreferenceOnEdit(
+    item: CartItemIf,
+    foodPreferenceIndex: number,
+    optionIndex: number
+  ) {
+    if (editMode) {
+      props.selectFoodPreference(item, foodPreferenceIndex, optionIndex);
+    }
   }
 
   return (
     <div className="pt-1 pb-2">
       <div className="pt-2 flex justify-between">
         <div className="flex">
-          <img src={props.item.img} width="55" height="55" alt="burger1" />
+          <img
+            src={props.item.img}
+            width="55"
+            height="55"
+            alt={props.item.name}
+            className="rounded-xl"
+          />
           <div className="ml-2">
             <div>{props.item.name}</div>
-            <div className="opacity-40 text-xs mt-1">
+            <div className="opacity-40 text-xs mt-1 mb-1">
               {props.item.description}
             </div>
           </div>
@@ -66,8 +82,11 @@ const CartItem: FC<CartItemProps> = (props) => {
           {props.item.foodPreferences &&
             props.item.foodPreferences.map(
               (foodPreference, foodPreferenceIndex) => (
-                <div className="mb-3" key={foodPreference.id}>
-                  <div className="mb-3">
+                <div
+                  className="mt-2 flex justify-between"
+                  key={foodPreference.id}
+                >
+                  <div>
                     <div className="mb-2">{foodPreference.question}</div>
                     <div className="flex flex-wrap text-food-item-price text-sm">
                       {foodPreference.options.map((option, optionIndex) => (
@@ -76,7 +95,7 @@ const CartItem: FC<CartItemProps> = (props) => {
                           data-choice-group="food-preference"
                           key={option.id}
                           onClick={() =>
-                            props.selectFoodPreference(
+                            selectFoodPreferenceOnEdit(
                               props.item,
                               foodPreferenceIndex,
                               optionIndex
@@ -89,6 +108,16 @@ const CartItem: FC<CartItemProps> = (props) => {
                         </div>
                       ))}
                     </div>
+                  </div>
+                  <div>
+                    {foodPreference.options &&
+                      foodPreference.options.filter(
+                        (o) => o.selected && o.additionalPrice > 0
+                      ).length > 0 &&
+                      "$" +
+                        foodPreference.options.filter(
+                          (o) => o.selected && o.additionalPrice > 0
+                        )[0].additionalPrice}
                   </div>
                 </div>
               )

@@ -45,7 +45,7 @@ const FoodItem: FC<FoodItemProps> = (props) => {
           <div className="ml-4 my-3 flex flex-col justify-between">
             <div>
               <div>{props.foodItem.name}</div>
-              <div className="opacity-40 text-xs mt-1">
+              <div className="opacity-40 text-xs mt-1 mb-2 desc-max-width">
                 {props.foodItem.description}
               </div>
             </div>

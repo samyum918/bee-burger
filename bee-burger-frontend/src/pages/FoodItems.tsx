@@ -39,8 +39,8 @@ const FoodItems: FC<FoodItemsProps> = () => {
         foodItemList.forEach((foodItem) => {
           if (foodItem.foodPreferences) {
             foodItem.foodPreferences.forEach((foodPreference) => {
-              foodPreference.options.forEach((option) => {
-                option.selected = false;
+              foodPreference.options.forEach((option, index) => {
+                option.selected = index == 0;
               });
             });
           }
@@ -89,6 +89,19 @@ const FoodItems: FC<FoodItemsProps> = () => {
 
   function addToCart(item: FoodItemIf) {
     const foodItem = foodItems[foodItems.indexOf(item)];
+
+    let additionalPrice = 0;
+    if (foodItem.foodPreferences) {
+      foodItem.foodPreferences.forEach((foodPreference) => {
+        if (foodPreference.options) {
+          foodPreference.options.forEach((option) => {
+            if (option.selected && option.additionalPrice > 0) {
+              additionalPrice += option.additionalPrice;
+            }
+          });
+        }
+      });
+    }
     const cartItem: CartItemIf = {
       foodId: foodItem.id,
       name: foodItem.name,
@@ -96,7 +109,8 @@ const FoodItems: FC<FoodItemsProps> = () => {
       price: foodItem.price,
       img: foodItem.img,
       quantity: 1,
-      totalPrice: foodItem.price,
+      additionalPrice,
+      totalPrice: foodItem.price + additionalPrice,
       foodPreferences: foodItem.foodPreferences,
     };
     addCartItem(cartItem);

@@ -11,4 +11,8 @@ function getFoodItemsByCategory(catId = 1) {
   );
 }
 
+function submitOrder(order) {
+  return httpService.post(`${appConfig.apiBaseUrl}/api/order/submit`, order);
+}
+
 export default { getCatergories, getFoodItemsByCategory };

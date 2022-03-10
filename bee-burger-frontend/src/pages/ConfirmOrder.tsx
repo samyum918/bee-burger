@@ -6,7 +6,8 @@ import { CartContext, SubmittedOrderContext } from "../context/Context";
 import { useNavigate } from "react-router-dom";
 
 const ConfirmOrder = () => {
-  const { cart, updateCartItem, deleteCartItem } = useContext(CartContext);
+  const { cart, updateCartItem, deleteCartItem, emptyCartItem } =
+    useContext(CartContext);
   const { submitCart } = useContext(SubmittedOrderContext);
   const navigate = useNavigate();
 
@@ -15,20 +16,22 @@ const ConfirmOrder = () => {
   function addQuantity(item: CartItemIf) {
     const cartCopy = [...cart];
     const index = cartCopy.indexOf(item);
-    cartCopy[index].quantity++;
-    cartCopy[index].totalPrice =
-      cartCopy[index].price * cartCopy[index].quantity;
-    updateCartItem(index, cartCopy[index]);
+    let targetItem = cartCopy[index];
+    targetItem.quantity++;
+    targetItem.totalPrice =
+      (targetItem.price + targetItem.additionalPrice) * targetItem.quantity;
+    updateCartItem(index, targetItem);
   }
 
   function substractQuantity(item: CartItemIf) {
     const cartCopy = [...cart];
     const index = cartCopy.indexOf(item);
-    if (cartCopy[index].quantity > 1) {
-      cartCopy[index].quantity--;
-      cartCopy[index].totalPrice =
-        cartCopy[index].price * cartCopy[index].quantity;
-      updateCartItem(index, cartCopy[index]);
+    let targetItem = cartCopy[index];
+    if (targetItem.quantity > 1) {
+      targetItem.quantity--;
+      targetItem.totalPrice =
+        (targetItem.price + targetItem.additionalPrice) * targetItem.quantity;
+      updateCartItem(index, targetItem);
     }
   }
 
@@ -45,22 +48,34 @@ const ConfirmOrder = () => {
   ) {
     const cartCopy = [...cart];
     const index = cartCopy.indexOf(item);
-    let foodPreferences = cartCopy[index].foodPreferences;
+    let targetItem = cartCopy[index];
+    let foodPreferences = targetItem.foodPreferences;
     if (foodPreferences) {
       let options = foodPreferences[foodPreferenceIndex].options;
       if (options) {
         options.forEach((option) => {
-          option.selected = false;
+          if (option.selected) {
+            option.selected = false;
+            if (option.additionalPrice > 0) {
+              targetItem.additionalPrice -= option.additionalPrice;
+            }
+          }
         });
         options[optionIndex].selected = true;
+        if (options[optionIndex].additionalPrice > 0) {
+          targetItem.additionalPrice += options[optionIndex].additionalPrice;
+        }
       }
     }
+    targetItem.totalPrice =
+      (targetItem.price + targetItem.additionalPrice) * targetItem.quantity;
 
     updateCartItem(index, cartCopy[index]);
   }
 
   function confirmOrder() {
     submitCart();
+    emptyCartItem();
     navigate("/order-summary");
   }
 
@@ -77,6 +92,11 @@ const ConfirmOrder = () => {
         </div>
 
         <div className="mt-6 bg-food-item-bg px-2 pb-2 text-title-light-yellow rounded-2xl">
+          {cart.length == 0 && (
+            <div className="flex justify-center items-center h-16 text-xl font-semibold">
+              No Item!
+            </div>
+          )}
           {cart.map((item, index) => (
             <CartItem
               item={item}

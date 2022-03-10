@@ -24,6 +24,10 @@
   height: 173px;
 }
 
+.desc-max-width {
+  max-width: 240px;
+}
+
 .menu-bg-min-height {
   min-height: 620px;
 }
@@ -44,5 +48,5 @@
 }
 
 [data-edit="cart-item"].active {
-  @apply opacity-100;
+  @apply opacity-100 cursor-pointer;
 }

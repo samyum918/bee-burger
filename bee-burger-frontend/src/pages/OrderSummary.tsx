@@ -30,8 +30,13 @@ const OrderSummary = () => {
         </div>
 
         <div className="my-6 bg-food-item-bg px-2 pb-2 text-title-light-yellow rounded-2xl">
-          {submittedOrder.map((order) => (
-            <div className="pt-1 pb-2">
+          {submittedOrder.length == 0 && (
+            <div className="flex justify-center items-center h-16 text-xl font-semibold">
+              No Item!
+            </div>
+          )}
+          {submittedOrder.map((order, index) => (
+            <div className="py-1" key={index}>
               <div className="pt-2 flex">
                 <div>
                   <img
@@ -39,17 +44,18 @@ const OrderSummary = () => {
                     width="55"
                     height="55"
                     alt={order.name}
+                    className="rounded-xl"
                   />
                 </div>
                 <div className="ml-2">
                   <div>{order.name}</div>
-                  <div className="opacity-40 text-xs mt-1">
+                  <div className="opacity-40 text-xs mt-1 mb-1">
                     {order.description}
                   </div>
                 </div>
               </div>
 
-              <div className="mt-2 pl-2 pr-4 pb-2 mb-3 border-b border-gray-700 opacity-40 text-sm">
+              <div className="mt-2 pl-2 pr-4 pb-2 border-b border-gray-700 opacity-40 text-sm">
                 <div className="flex justify-between">
                   <div>Product Price</div>
                   <div>${order.price}</div>
@@ -57,8 +63,11 @@ const OrderSummary = () => {
                 <div>
                   {order.foodPreferences &&
                     order.foodPreferences.map((foodPreference) => (
-                      <div className="mb-3" key={foodPreference.id}>
-                        <div className="mb-3">
+                      <div
+                        className="mt-2 flex justify-between"
+                        key={foodPreference.id}
+                      >
+                        <div>
                           <div className="mb-2">{foodPreference.question}</div>
                           <div className="flex flex-wrap text-food-item-price text-sm">
                             {foodPreference.options.map((option) => (
@@ -73,6 +82,16 @@ const OrderSummary = () => {
                               </div>
                             ))}
                           </div>
+                        </div>
+                        <div>
+                          {foodPreference.options &&
+                            foodPreference.options.filter(
+                              (o) => o.selected && o.additionalPrice > 0
+                            ).length > 0 &&
+                            "$" +
+                              foodPreference.options.filter(
+                                (o) => o.selected && o.additionalPrice > 0
+                              )[0].additionalPrice}
                         </div>
                       </div>
                     ))}
