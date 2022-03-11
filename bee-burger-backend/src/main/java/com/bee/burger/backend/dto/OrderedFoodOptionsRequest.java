@@ -7,6 +7,6 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubmitOrderOptionsRequest {
+public class OrderedFoodOptionsRequest {
     Integer optionId;
 }

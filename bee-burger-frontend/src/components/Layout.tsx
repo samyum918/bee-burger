@@ -5,12 +5,16 @@ import OrderSummary from "../pages/OrderSummary";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { CartContext, SubmittedOrderContext } from "../context/Context";
-import { CartItemIf } from "../common/types";
+import { CartItemIf, OrderIf } from "../common/types";
 import PageNotFound from "../pages/PageNotFound";
+import { OrderedFoodIf } from "./../common/types";
+import foodItemsService from "../services/foodItemsService";
+import httpService from "../services/httpService";
 
 const Layout = () => {
   const [cart, setCart] = useState<CartItemIf[]>([]);
   const [submittedOrder, setSubmittedOrder] = useState<CartItemIf[]>([]);
+  const customerInfo = sessionStorage.getItem("customerInfo") || "";
 
   function addCartItem(item: CartItemIf) {
     let cartCopy = [...cart];
@@ -34,12 +38,33 @@ const Layout = () => {
     setCart([]);
   }
 
-  function submitCart() {
-    setSubmittedOrder([...submittedOrder, ...cart]);
+  async function submitCart() {
+    let customerInfoJson = JSON.parse(customerInfo);
+    let order: OrderIf = {
+      customerId: customerInfoJson.customerId,
+      orderedFood: cart.map((c) => {
+        return {
+          foodId: c.foodId,
+          quantity: c.quantity,
+          totalPrice: c.totalPrice,
+          foodOptions:
+            c.foodPreferences?.map((p) => {
+              return {
+                optionId: p.options.filter((o) => o.selected)[0].id,
+              };
+            }) || [],
+        };
+      }),
+    };
+    try {
+      await foodItemsService.submitOrder(order);
+      setSubmittedOrder([...submittedOrder, ...cart]);
+    } catch (ex) {
+      httpService.handleApiError(ex);
+    }
   }
 
   function RestrictedRoute({ children }: { children: JSX.Element }) {
-    const customerInfo = sessionStorage.getItem("customerInfo") || "";
     let customerInfoJson = JSON.parse(customerInfo);
     if (customerInfoJson.customerId && customerInfoJson.seatNo) {
       return children;

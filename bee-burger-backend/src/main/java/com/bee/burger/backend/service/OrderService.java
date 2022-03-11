@@ -1,6 +1,6 @@
 package com.bee.burger.backend.service;
 
-import com.bee.burger.backend.dto.SubmitOrderRequest;
+import com.bee.burger.backend.dto.OrderRequest;
 import com.bee.burger.backend.repository.OrderFoodDetailRepository;
 import com.bee.burger.backend.repository.OrderFoodRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ public class OrderService {
     @Autowired
     OrderFoodDetailRepository orderFoodDetailRepository;
 
-    public void submitOrder(SubmitOrderRequest request) {
+    public void submitOrder(OrderRequest request) {
 
     }
 }

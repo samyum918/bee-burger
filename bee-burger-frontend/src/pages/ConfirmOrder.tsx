@@ -35,6 +35,14 @@ const ConfirmOrder = () => {
     }
   }
 
+  function editItem(item: CartItemIf) {
+    const cartCopy = [...cart];
+    const index = cartCopy.indexOf(item);
+    let targetItem = cartCopy[index];
+    targetItem.editing = !targetItem.editing;
+    updateCartItem(index, targetItem);
+  }
+
   function deleteItem(item: CartItemIf) {
     const cartCopy = [...cart];
     const index = cartCopy.indexOf(item);
@@ -81,7 +89,7 @@ const ConfirmOrder = () => {
 
   return (
     <>
-      <Header seatNo="12B" backUrl="/food-items" />
+      <Header backUrl="/food-items" />
 
       <div className="mt-20 pb-8 w-full px-4 bg-black menu-bg-min-height">
         <div className="border-b border-gray-700 flex justify-center items-center text-title-light-yellow">
@@ -92,7 +100,7 @@ const ConfirmOrder = () => {
         </div>
 
         <div className="mt-6 bg-food-item-bg px-2 pb-2 text-title-light-yellow rounded-2xl">
-          {cart.length == 0 && (
+          {cart.length === 0 && (
             <div className="flex justify-center items-center h-16 text-xl font-semibold">
               No Item!
             </div>
@@ -102,6 +110,7 @@ const ConfirmOrder = () => {
               item={item}
               addQuantity={addQuantity}
               substractQuantity={substractQuantity}
+              editItem={editItem}
               deleteItem={deleteItem}
               selectFoodPreference={selectFoodPreference}
               key={index}

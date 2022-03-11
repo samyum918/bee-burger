@@ -40,7 +40,7 @@ const FoodItems: FC<FoodItemsProps> = () => {
           if (foodItem.foodPreferences) {
             foodItem.foodPreferences.forEach((foodPreference) => {
               foodPreference.options.forEach((option, index) => {
-                option.selected = index == 0;
+                option.selected = index === 0;
               });
             });
           }
@@ -111,6 +111,7 @@ const FoodItems: FC<FoodItemsProps> = () => {
       quantity: 1,
       additionalPrice,
       totalPrice: foodItem.price + additionalPrice,
+      editing: false,
       foodPreferences: foodItem.foodPreferences,
     };
     addCartItem(cartItem);
@@ -119,7 +120,7 @@ const FoodItems: FC<FoodItemsProps> = () => {
 
   return (
     <>
-      <Header seatNo="12B" backUrl="/" />
+      <Header backUrl="/" />
 
       <div className="mt-20 pb-8 w-full px-4 bg-black menu-bg-min-height">
         <div className="border-b border-gray-700">

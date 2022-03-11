@@ -34,5 +34,22 @@ export interface CartItemIf {
   img: string;
   quantity: number;
   totalPrice: number;
+  editing: boolean;
   foodPreferences?: FoodPreference[] | null | undefined;
+}
+
+export interface OrderIf {
+  customerId: string;
+  orderedFood: OrderedFoodIf[];
+}
+
+export interface OrderedFoodIf {
+  foodId: number;
+  quantity: number;
+  totalPrice: number;
+  foodOptions: OrderedFoodOptionsIf[] | undefined;
+}
+
+export interface OrderedFoodOptionsIf {
+  optionId: number;
 }

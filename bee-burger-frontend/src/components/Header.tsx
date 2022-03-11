@@ -3,10 +3,11 @@ import { FC } from "react";
 
 interface HeaderProps {
   backUrl: string;
-  seatNo: string;
 }
 
 const Header: FC<HeaderProps> = (props) => {
+  const customerInfo = JSON.parse(sessionStorage.getItem("customerInfo") || "");
+
   return (
     <div className="mt-12 px-10 flex justify-between w-full">
       <div className="flex justify-between items-center">
@@ -15,7 +16,7 @@ const Header: FC<HeaderProps> = (props) => {
         </Link>
       </div>
       <div className="opacity-60 px-7 py-1 rounded-lg bg-title-light-yellow font-bold">
-        Seat {props.seatNo}
+        Seat {customerInfo.seatNo}
       </div>
       <div className="flex justify-between items-center">
         <Link to="/order-summary">

@@ -5,6 +5,7 @@ interface CartItemProps {
   item: CartItemIf;
   addQuantity: (item: CartItemIf) => void;
   substractQuantity: (item: CartItemIf) => void;
+  editItem: (item: CartItemIf) => void;
   deleteItem: (item: CartItemIf) => void;
   selectFoodPreference: (
     item: CartItemIf,
@@ -14,15 +15,9 @@ interface CartItemProps {
 }
 
 const CartItem: FC<CartItemProps> = (props) => {
-  const [editMode, setEditMode] = useState(false);
-
-  function editClick() {
-    setEditMode(!editMode);
-  }
-
-  function getFoodPreferenceclasses() {
+  function getFoodPreferenceclasses(editing: boolean) {
     let classes = "opacity-40 text-sm";
-    return editMode ? classes + " active" : classes;
+    return editing ? classes + " active" : classes;
   }
 
   function getOptionClasses(selected: boolean) {
@@ -36,7 +31,7 @@ const CartItem: FC<CartItemProps> = (props) => {
     foodPreferenceIndex: number,
     optionIndex: number
   ) {
-    if (editMode) {
+    if (item.editing) {
       props.selectFoodPreference(item, foodPreferenceIndex, optionIndex);
     }
   }
@@ -62,9 +57,9 @@ const CartItem: FC<CartItemProps> = (props) => {
         {props.item.foodPreferences && (
           <div
             className="bg-black rounded-xl p-2 cursor-pointer mr-2 h-fit"
-            onClick={editClick}
+            onClick={() => props.editItem(props.item)}
           >
-            {editMode ? (
+            {props.item.editing ? (
               <img src="/img/tick.png" width="15" height="15" alt="edit_icon" />
             ) : (
               <img src="/img/edit.png" width="15" height="15" alt="edit_icon" />
@@ -78,7 +73,10 @@ const CartItem: FC<CartItemProps> = (props) => {
           <div>Product Price</div>
           <div>${props.item.price}</div>
         </div>
-        <div className={getFoodPreferenceclasses()} data-edit="cart-item">
+        <div
+          className={getFoodPreferenceclasses(props.item.editing)}
+          data-edit="cart-item"
+        >
           {props.item.foodPreferences &&
             props.item.foodPreferences.map(
               (foodPreference, foodPreferenceIndex) => (

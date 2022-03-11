@@ -1,6 +1,6 @@
 package com.bee.burger.backend.controller;
 
-import com.bee.burger.backend.dto.SubmitOrderRequest;
+import com.bee.burger.backend.dto.OrderRequest;
 import com.bee.burger.backend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -16,7 +16,7 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping("/submit")
-    public void submitOrder(@RequestBody @Validated SubmitOrderRequest request) {
+    public void submitOrder(@RequestBody @Validated OrderRequest request) {
         orderService.submitOrder(request);
     }
 }
