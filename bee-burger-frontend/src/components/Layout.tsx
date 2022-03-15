@@ -7,14 +7,12 @@ import { useState } from "react";
 import { CartContext, SubmittedOrderContext } from "../context/Context";
 import { CartItemIf, OrderIf } from "../common/types";
 import PageNotFound from "../pages/PageNotFound";
-import { OrderedFoodIf } from "./../common/types";
 import foodItemsService from "../services/foodItemsService";
 import httpService from "../services/httpService";
 
 const Layout = () => {
   const [cart, setCart] = useState<CartItemIf[]>([]);
   const [submittedOrder, setSubmittedOrder] = useState<CartItemIf[]>([]);
-  const customerInfo = sessionStorage.getItem("customerInfo") || "";
 
   function addCartItem(item: CartItemIf) {
     let cartCopy = [...cart];
@@ -39,6 +37,7 @@ const Layout = () => {
   }
 
   async function submitCart() {
+    const customerInfo = sessionStorage.getItem("customerInfo") || "";
     let customerInfoJson = JSON.parse(customerInfo);
     let order: OrderIf = {
       customerId: customerInfoJson.customerId,
@@ -65,6 +64,7 @@ const Layout = () => {
   }
 
   function RestrictedRoute({ children }: { children: JSX.Element }) {
+    const customerInfo = sessionStorage.getItem("customerInfo") || "";
     let customerInfoJson = JSON.parse(customerInfo);
     if (customerInfoJson.customerId && customerInfoJson.seatNo) {
       return children;

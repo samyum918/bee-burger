@@ -1,6 +1,7 @@
 package com.bee.burger.backend.controller;
 
 import com.bee.burger.backend.dto.FoodItemsResponse;
+import com.bee.burger.backend.dto.FoodSetItemsResponse;
 import com.bee.burger.backend.service.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,5 +18,10 @@ public class FoodController {
     @GetMapping("/get-food-items-by-category")
     public List<FoodItemsResponse> getFoodItemsByCategory(@RequestParam @NotNull Integer catId) {
         return foodService.getFoodItemsByCategory(catId);
+    }
+
+    @GetMapping("/get-food-set-items")
+    public List<FoodSetItemsResponse> getFoodSetItems() {
+        return foodService.getFoodSetItems();
     }
 }

@@ -19,10 +19,6 @@ public class OrderedFood extends BaseModel {
     @OneToOne
     @JoinColumn(name = "food_id")
     private Food food;
-
-    @Column(name = "quantity")
     private Integer quantity;
-
-    @Column(name = "total_price")
     private BigDecimal totalPrice;
 }
