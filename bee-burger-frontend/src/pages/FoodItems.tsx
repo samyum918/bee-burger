@@ -8,9 +8,7 @@ import httpService from "../services/httpService";
 import { useNavigate } from "react-router-dom";
 import { CartItemIf } from "./../common/types";
 
-interface FoodItemsProps {}
-
-const FoodItems: FC<FoodItemsProps> = () => {
+const FoodItems: FC = () => {
   const [foodCategories, setFoodCategories] = useState<CategoryIf[]>([]);
   const [activeFoodCategory, setActiveFoodCategory] = useState(1);
   const [foodItems, setFoodItems] = useState<FoodItemIf[]>([]);
@@ -34,7 +32,7 @@ const FoodItems: FC<FoodItemsProps> = () => {
   async function fetchFoodItems(catId: number = 1) {
     try {
       const response = await foodItemsService.getFoodItemsByCategory(catId);
-      let foodItemList: FoodItemIf[] = response.data;
+      const foodItemList: FoodItemIf[] = response.data;
       if (foodItemList) {
         foodItemList.forEach((foodItem) => {
           if (foodItem.foodPreferences) {

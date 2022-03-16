@@ -15,19 +15,19 @@ const Layout = () => {
   const [submittedOrder, setSubmittedOrder] = useState<CartItemIf[]>([]);
 
   function addCartItem(item: CartItemIf) {
-    let cartCopy = [...cart];
+    const cartCopy = [...cart];
     cartCopy.push(item);
     setCart(cartCopy);
   }
 
   function updateCartItem(index: number, item: CartItemIf) {
-    let cartCopy = [...cart];
+    const cartCopy = [...cart];
     cartCopy[index] = item;
     setCart(cartCopy);
   }
 
   function deleteCartItem(index: number) {
-    let cartCopy = [...cart];
+    const cartCopy = [...cart];
     cartCopy.splice(index, 1);
     setCart(cartCopy);
   }
@@ -38,8 +38,8 @@ const Layout = () => {
 
   async function submitCart() {
     const customerInfo = sessionStorage.getItem("customerInfo") || "";
-    let customerInfoJson = JSON.parse(customerInfo);
-    let order: OrderIf = {
+    const customerInfoJson = JSON.parse(customerInfo);
+    const order: OrderIf = {
       customerId: customerInfoJson.customerId,
       orderedFood: cart.map((c) => {
         return {
@@ -65,7 +65,7 @@ const Layout = () => {
 
   function RestrictedRoute({ children }: { children: JSX.Element }) {
     const customerInfo = sessionStorage.getItem("customerInfo") || "";
-    let customerInfoJson = JSON.parse(customerInfo);
+    const customerInfoJson = JSON.parse(customerInfo);
     if (customerInfoJson.customerId && customerInfoJson.seatNo) {
       return children;
     } else {

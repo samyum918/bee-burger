@@ -16,15 +16,15 @@ interface SubmittedOrderIf {
 
 const CartContext = React.createContext<CartContextIf>({
   cart: [],
-  addCartItem: (item: CartItemIf) => {},
-  updateCartItem: (index: number, item: CartItemIf) => {},
-  deleteCartItem: (index: number) => {},
-  emptyCartItem: () => {},
+  addCartItem: () => undefined,
+  updateCartItem: () => undefined,
+  deleteCartItem: () => undefined,
+  emptyCartItem: () => undefined,
 });
 
 const SubmittedOrderContext = React.createContext<SubmittedOrderIf>({
   submittedOrder: [],
-  submitCart: () => {},
+  submitCart: () => undefined,
 });
 
 export { CartContext, SubmittedOrderContext };

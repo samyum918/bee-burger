@@ -15,7 +15,7 @@ const FoodItem: FC<FoodItemProps> = (props) => {
   const [showFoodPreference, setShowFoodPreference] = useState(false);
 
   function getOptionClasses(selected: boolean) {
-    let classes =
+    const classes =
       "rounded-lg border border-food-item-price px-4 mr-2 mb-2 w-fit";
     return selected ? classes + " active" : classes;
   }
@@ -25,7 +25,10 @@ const FoodItem: FC<FoodItemProps> = (props) => {
   }
 
   function clickFoodItem() {
-    if (props.foodItem.foodPreferences) {
+    if (
+      props.foodItem.foodPreferences &&
+      props.foodItem.foodPreferences.length > 0
+    ) {
       if (!showFoodPreference) {
         setShowFoodPreference(true);
       }

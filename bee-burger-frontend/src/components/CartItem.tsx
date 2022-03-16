@@ -16,12 +16,12 @@ interface CartItemProps {
 
 const CartItem: FC<CartItemProps> = (props) => {
   function getFoodPreferenceclasses(editing: boolean) {
-    let classes = "opacity-40 text-sm";
+    const classes = "opacity-40 text-sm";
     return editing ? classes + " active" : classes;
   }
 
   function getOptionClasses(selected: boolean) {
-    let classes =
+    const classes =
       "rounded-lg border border-food-item-price px-4 mr-2 mb-2 w-fit";
     return selected ? classes + " active" : classes;
   }

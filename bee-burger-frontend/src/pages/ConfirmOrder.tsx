@@ -1,5 +1,5 @@
 import Header from "../components/Header";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import CartItem from "../components/CartItem";
 import { CartItemIf } from "../common/types";
 import { CartContext, SubmittedOrderContext } from "../context/Context";
@@ -11,12 +11,10 @@ const ConfirmOrder = () => {
   const { submitCart } = useContext(SubmittedOrderContext);
   const navigate = useNavigate();
 
-  useEffect(() => {}, []);
-
   function addQuantity(item: CartItemIf) {
     const cartCopy = [...cart];
     const index = cartCopy.indexOf(item);
-    let targetItem = cartCopy[index];
+    const targetItem = cartCopy[index];
     targetItem.quantity++;
     targetItem.totalPrice =
       (targetItem.price + targetItem.additionalPrice) * targetItem.quantity;
@@ -26,7 +24,7 @@ const ConfirmOrder = () => {
   function substractQuantity(item: CartItemIf) {
     const cartCopy = [...cart];
     const index = cartCopy.indexOf(item);
-    let targetItem = cartCopy[index];
+    const targetItem = cartCopy[index];
     if (targetItem.quantity > 1) {
       targetItem.quantity--;
       targetItem.totalPrice =
@@ -38,7 +36,7 @@ const ConfirmOrder = () => {
   function editItem(item: CartItemIf) {
     const cartCopy = [...cart];
     const index = cartCopy.indexOf(item);
-    let targetItem = cartCopy[index];
+    const targetItem = cartCopy[index];
     targetItem.editing = !targetItem.editing;
     updateCartItem(index, targetItem);
   }
@@ -56,10 +54,10 @@ const ConfirmOrder = () => {
   ) {
     const cartCopy = [...cart];
     const index = cartCopy.indexOf(item);
-    let targetItem = cartCopy[index];
-    let foodPreferences = targetItem.foodPreferences;
+    const targetItem = cartCopy[index];
+    const foodPreferences = targetItem.foodPreferences;
     if (foodPreferences) {
-      let options = foodPreferences[foodPreferenceIndex].options;
+      const options = foodPreferences[foodPreferenceIndex].options;
       if (options) {
         options.forEach((option) => {
           if (option.selected) {
