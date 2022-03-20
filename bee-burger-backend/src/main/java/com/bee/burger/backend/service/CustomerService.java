@@ -23,7 +23,7 @@ public class CustomerService {
         Customer customer = new Customer();
         customer.setSeatNo(getRandomSeatNo());
         customer.setStartTime(now);
-        customer.setStartTime(endTime);
+        customer.setEndTime(endTime);
         Customer updatedCustomer = customerRepository.save(customer);
 
         return new CustomerInfoResponse(updatedCustomer.getId(),

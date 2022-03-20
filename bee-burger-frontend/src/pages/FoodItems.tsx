@@ -29,7 +29,7 @@ const FoodItems: FC = () => {
     }
   }
 
-  async function fetchFoodItems(catId: number = 1) {
+  async function fetchFoodItems(catId = 1) {
     try {
       const response = await foodItemsService.getFoodItemsByCategory(catId);
       const foodItemList: FoodItemIf[] = response.data;
@@ -58,7 +58,7 @@ const FoodItems: FC = () => {
   }
 
   function getCategoryClasses(currentFoodCategory: number) {
-    let classes = "p-4 cursor-pointer";
+    const classes = "p-4 cursor-pointer";
     return activeFoodCategory === currentFoodCategory
       ? classes + " active"
       : classes;
@@ -71,9 +71,9 @@ const FoodItems: FC = () => {
   ) {
     const foodItemsCopy = [...foodItems];
     const index = foodItemsCopy.indexOf(item);
-    let foodPreferences = foodItemsCopy[index].foodPreferences;
+    const foodPreferences = foodItemsCopy[index].foodPreferences;
     if (foodPreferences) {
-      let options = foodPreferences[foodPreferenceIndex].options;
+      const options = foodPreferences[foodPreferenceIndex].options;
       if (options) {
         options.forEach((option) => {
           option.selected = false;

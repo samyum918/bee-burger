@@ -8,22 +8,21 @@ const Landing = () => {
   const [seatNo, setSeatNo] = useState("");
 
   useEffect(() => {
-    fetchCustomerInfo();
+    customerService
+      .getCustomerInfo()
+      .then((res) => {
+        if (res.data) {
+          setSeatNo(res.data.seatNo);
+          sessionStorage.setItem("customerInfo", JSON.stringify(res.data));
+        }
+      })
+      .catch((ex) => {
+        httpService.handleApiError(ex);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
-
-  async function fetchCustomerInfo() {
-    try {
-      const response = await customerService.getCustomerInfo();
-      if (response.data) {
-        setSeatNo(response.data.seatNo);
-        sessionStorage.setItem("customerInfo", JSON.stringify(response.data));
-      }
-    } catch (ex) {
-      httpService.handleApiError(ex);
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   return (
     <div className="mt-20 flex justify-center items-center w-full">

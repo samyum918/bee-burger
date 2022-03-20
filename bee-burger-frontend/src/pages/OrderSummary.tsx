@@ -6,7 +6,7 @@ const OrderSummary = () => {
   const { submittedOrder } = useContext(SubmittedOrderContext);
 
   function getOptionClasses(selected: boolean) {
-    let classes =
+    const classes =
       "rounded-lg border border-food-item-price px-4 mr-2 mb-2 w-fit";
     return selected ? classes + " active" : classes;
   }
