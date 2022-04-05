@@ -105,9 +105,9 @@ const FoodItems: FC = () => {
       foodPreferences: item.foodPreferences,
     };
     const foodItemsCopy = [...foodItems];
-    const foodSelectionCategories =
-      foodItemsCopy[selectedFoodItemIndex].foodSelectionCategories || [];
-    const targetCat = foodSelectionCategories.find(
+    const foodSetSubcategories =
+      foodItemsCopy[selectedFoodItemIndex].foodSetSubcategories || [];
+    const targetCat = foodSetSubcategories.find(
       (cat) => cat.id === selectedCategoryFoodId
     );
     if (targetCat) {
@@ -160,8 +160,8 @@ const FoodItems: FC = () => {
     const foodItem = foodItems[foodItems.indexOf(item)];
 
     let additionalPrice = 0;
-    if (foodItem.foodSelectionCategories) {
-      foodItem.foodSelectionCategories.forEach((cat) => {
+    if (foodItem.foodSetSubcategories) {
+      foodItem.foodSetSubcategories.forEach((cat) => {
         if (cat.foodItemSelected) {
           additionalPrice += CalcUtil.calcAdditionalPrice(
             cat.foodItemSelected.foodPreferences
@@ -181,16 +181,13 @@ const FoodItems: FC = () => {
       additionalPrice,
       totalPrice: CalcUtil.calcTotalPrice(foodItem.price, additionalPrice, 1),
       editing: false,
-      foodSelectionCategories: foodItem.foodSelectionCategories,
+      foodSetSubcategories: foodItem.foodSetSubcategories,
       foodPreferences: foodItem.foodPreferences,
     };
 
     const existingItem = cart.find(
       (item) =>
-        isEqual(
-          cartItem.foodSelectionCategories,
-          item.foodSelectionCategories
-        ) &&
+        isEqual(cartItem.foodSetSubcategories, item.foodSetSubcategories) &&
         isEqual(cartItem.foodPreferences, item.foodPreferences) &&
         isEqual(cartItem.foodId, item.foodId)
     );

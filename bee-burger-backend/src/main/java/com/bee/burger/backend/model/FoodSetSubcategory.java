@@ -10,14 +10,14 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "food_set_item_category")
-public class FoodSetItemCategory extends BaseModel {
+@Table(name = "food_set_subcategory")
+public class FoodSetSubcategory extends BaseModel {
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name="food_set_id", nullable = false)
     private FoodSet foodSet;
 
     @OneToOne
-    @JoinColumn(name = "category_selection_id")
-    private Category category;
+    @JoinColumn(name = "subcategory_id")
+    private Category subcategory;
 }

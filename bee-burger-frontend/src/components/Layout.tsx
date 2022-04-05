@@ -46,7 +46,7 @@ const Layout = () => {
           foodId: c.foodId,
           quantity: c.quantity,
           totalPrice: c.totalPrice,
-          subCategoryFoods: c.foodSelectionCategories?.map((c) => {
+          subCategoryFoods: c.foodSetSubcategories?.map((c) => {
             return {
               foodId: c.foodItemSelected!.id,
               foodOptionIds:

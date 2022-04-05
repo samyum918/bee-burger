@@ -30,15 +30,15 @@ public class FoodSet extends BaseModel {
     private LocalDateTime updateTime;
 
     @JsonManagedReference
-    @OrderBy("category.id")
+    @OrderBy("subcategory.id")
     @OneToMany(mappedBy = "foodSet", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<FoodSetItemCategory> foodSetItemCategorySet = new HashSet<>();
+    private Set<FoodSetSubcategory> foodSetSubcategorySet = new HashSet<>();
 
-    @JsonProperty(value = "foodSetItemCategorySet")
-    public void setFoodSetItemCategorySet(Set<FoodSetItemCategory> items) {
-        if(foodSetItemCategorySet != null) {
-            foodSetItemCategorySet.clear();
-            foodSetItemCategorySet.addAll(items);
+    @JsonProperty(value = "foodSetSubcategorySet")
+    public void setFoodSetSubcategorySet(Set<FoodSetSubcategory> items) {
+        if(foodSetSubcategorySet != null) {
+            foodSetSubcategorySet.clear();
+            foodSetSubcategorySet.addAll(items);
         }
     }
 }

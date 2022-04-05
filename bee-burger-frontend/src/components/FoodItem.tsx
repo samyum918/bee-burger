@@ -48,10 +48,10 @@ const FoodItem: FC<FoodItemProps> = (props) => {
   function disableClickConfirmBtn() {
     if (!props.isFromModal) {
       if (
-        props.foodItem.foodSelectionCategories &&
-        props.foodItem.foodSelectionCategories.length > 0
+        props.foodItem.foodSetSubcategories &&
+        props.foodItem.foodSetSubcategories.length > 0
       ) {
-        const unselectedItem = props.foodItem.foodSelectionCategories.find(
+        const unselectedItem = props.foodItem.foodSetSubcategories.find(
           (c) => c.foodItemSelected == null
         );
         return unselectedItem != null;
@@ -64,8 +64,8 @@ const FoodItem: FC<FoodItemProps> = (props) => {
     if (
       (props.foodItem.foodPreferences &&
         props.foodItem.foodPreferences.length > 0) ||
-      (props.foodItem.foodSelectionCategories &&
-        props.foodItem.foodSelectionCategories.length > 0)
+      (props.foodItem.foodSetSubcategories &&
+        props.foodItem.foodSetSubcategories.length > 0)
     ) {
       if (!showFoodPreference) {
         setShowFoodPreference(true);
@@ -108,35 +108,33 @@ const FoodItem: FC<FoodItemProps> = (props) => {
         </div>
 
         <div className={getFoodPreferenceSectionClasses()}>
-          {props.foodItem.foodSelectionCategories &&
-            props.foodItem.foodSelectionCategories.map(
-              (foodSelectionCategory) => (
-                <div
-                  className="flex justify-between mb-3"
-                  key={foodSelectionCategory.id}
-                  onClick={() =>
-                    selectCategoryFood(
-                      props.foodItemIndex,
-                      foodSelectionCategory.id
-                    )
-                  }
-                >
-                  <div>
-                    {foodSelectionCategory.foodItemSelected
-                      ? foodSelectionCategory.foodItemSelected.name
-                      : foodSelectionCategory.name}
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <img
-                      src="/img/right_arrow.png"
-                      alt="right_arrow"
-                      width="7"
-                      height="14"
-                    />
-                  </div>
+          {props.foodItem.foodSetSubcategories &&
+            props.foodItem.foodSetSubcategories.map((foodSelectionCategory) => (
+              <div
+                className="flex justify-between mb-3"
+                key={foodSelectionCategory.id}
+                onClick={() =>
+                  selectCategoryFood(
+                    props.foodItemIndex,
+                    foodSelectionCategory.id
+                  )
+                }
+              >
+                <div>
+                  {foodSelectionCategory.foodItemSelected
+                    ? foodSelectionCategory.foodItemSelected.name
+                    : foodSelectionCategory.name}
                 </div>
-              )
-            )}
+                <div className="flex justify-between items-center">
+                  <img
+                    src="/img/right_arrow.png"
+                    alt="right_arrow"
+                    width="7"
+                    height="14"
+                  />
+                </div>
+              </div>
+            ))}
           {props.foodItem.foodPreferences &&
             props.foodItem.foodPreferences.map(
               (foodPreference, foodPreferenceIndex) => (

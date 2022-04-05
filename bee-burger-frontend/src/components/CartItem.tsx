@@ -61,7 +61,7 @@ const CartItem: FC<CartItemProps> = (props) => {
             </div>
           </div>
         </div>
-        {(props.item.foodSelectionCategories || props.item.foodPreferences) && (
+        {(props.item.foodSetSubcategories || props.item.foodPreferences) && (
           <div
             className="bg-black rounded-xl p-2 cursor-pointer mr-2 h-fit"
             onClick={() => props.editItem(props.item)}
@@ -84,8 +84,8 @@ const CartItem: FC<CartItemProps> = (props) => {
           className={getFoodPreferenceclasses(props.item.editing)}
           data-edit="cart-item"
         >
-          {props.item.foodSelectionCategories &&
-            props.item.foodSelectionCategories.map(
+          {props.item.foodSetSubcategories &&
+            props.item.foodSetSubcategories.map(
               (foodSelectionCategory, foodSelectionCategoryIndex) => (
                 <div key={foodSelectionCategoryIndex}>
                   {foodSelectionCategory.foodItemSelected && (

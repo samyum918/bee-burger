@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FoodSelectionCategoriesResponse {
+public class FoodSetSubcategoriesResponse {
     Integer id;
     String name;
 }

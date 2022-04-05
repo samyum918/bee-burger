@@ -64,7 +64,7 @@ const ConfirmOrder = () => {
     const targetItem = cartCopy[index];
     const foodPreferences =
       typeof foodSelectionCategoryIndex === "number"
-        ? targetItem.foodSelectionCategories![foodSelectionCategoryIndex]
+        ? targetItem.foodSetSubcategories![foodSelectionCategoryIndex]
             .foodItemSelected!.foodPreferences
         : targetItem.foodPreferences;
 

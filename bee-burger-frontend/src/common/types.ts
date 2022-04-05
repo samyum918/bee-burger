@@ -16,7 +16,7 @@ export interface FoodItemIf {
   description: string;
   price: number;
   img: string;
-  foodSelectionCategories?: FoodSelectionCategoriesIf[] | null | undefined;
+  foodSetSubcategories?: FoodSetSubcategoriesIf[] | null | undefined;
   foodPreferences?: FoodPreference[] | null | undefined;
 }
 
@@ -26,7 +26,7 @@ export interface FoodSelectionItemIf {
   foodPreferences?: FoodPreference[] | null | undefined;
 }
 
-export interface FoodSelectionCategoriesIf {
+export interface FoodSetSubcategoriesIf {
   id: number;
   name: string;
   foodItemSelected: FoodSelectionItemIf | null | undefined;
@@ -56,7 +56,7 @@ export interface CartItemIf {
   quantity: number;
   totalPrice: number;
   editing: boolean;
-  foodSelectionCategories?: FoodSelectionCategoriesIf[] | null | undefined;
+  foodSetSubcategories?: FoodSetSubcategoriesIf[] | null | undefined;
   foodPreferences?: FoodPreference[] | null | undefined;
 }
 

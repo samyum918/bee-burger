@@ -41,11 +41,11 @@ public class FoodService {
         List<FoodSet> foodSetList = foodSetRepository.findAllByCategory_Id(catId);
         return foodSetList.stream().map(fs -> {
             FoodSetItemsResponse responseItem = ProjectUtils.transformFrom(fs,
-                    FoodSetItemsResponse.class, "foodSelectionCategories");
-            responseItem.setFoodSelectionCategories(
-                    fs.getFoodSetItemCategorySet().stream()
-                            .map(cs -> ProjectUtils.transformFrom(cs.getCategory(),
-                                    FoodSelectionCategoriesResponse.class))
+                    FoodSetItemsResponse.class, "foodSubcategories");
+            responseItem.setFoodSetSubcategories(
+                    fs.getFoodSetSubcategorySet().stream()
+                            .map(cs -> ProjectUtils.transformFrom(cs.getSubcategory(),
+                                    FoodSetSubcategoriesResponse.class))
                             .collect(Collectors.toList())
             );
             return responseItem;

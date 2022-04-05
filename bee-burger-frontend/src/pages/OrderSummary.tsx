@@ -61,8 +61,8 @@ const OrderSummary = () => {
                   <div>${order.price}</div>
                 </div>
                 <div>
-                  {order.foodSelectionCategories &&
-                    order.foodSelectionCategories.map(
+                  {order.foodSetSubcategories &&
+                    order.foodSetSubcategories.map(
                       (foodSelectionCategory, foodSelectionCategoryIndex) => (
                         <div key={foodSelectionCategoryIndex}>
                           {foodSelectionCategory.foodItemSelected && (
