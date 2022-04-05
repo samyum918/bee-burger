@@ -3,7 +3,7 @@ import cogoToast from "cogo-toast";
 
 // axios.defaults.withCredentials = true;
 
-function handleApiError(ex) {
+function handleApiError(ex: any) {
   if (ex && ex.response) {
     if (ex.response.status === 500) {
       cogoToast.error("An unexpected error occurred");

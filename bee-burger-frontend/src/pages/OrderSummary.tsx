@@ -61,6 +61,65 @@ const OrderSummary = () => {
                   <div>${order.price}</div>
                 </div>
                 <div>
+                  {order.foodSelectionCategories &&
+                    order.foodSelectionCategories.map(
+                      (foodSelectionCategory, foodSelectionCategoryIndex) => (
+                        <div key={foodSelectionCategoryIndex}>
+                          {foodSelectionCategory.foodItemSelected && (
+                            <div className="flex justify-between text-sm">
+                              <div>
+                                {foodSelectionCategory.foodItemSelected.name}
+                              </div>
+                              <div>$0</div>
+                            </div>
+                          )}
+                          {foodSelectionCategory.foodItemSelected &&
+                            foodSelectionCategory.foodItemSelected
+                              .foodPreferences &&
+                            foodSelectionCategory.foodItemSelected.foodPreferences.map(
+                              (foodPreference) => (
+                                <div
+                                  className="mt-2 flex justify-between"
+                                  key={foodPreference.id}
+                                >
+                                  <div>
+                                    <div className="mb-2">
+                                      {foodPreference.question}
+                                    </div>
+                                    <div className="flex flex-wrap text-food-item-price text-sm">
+                                      {foodPreference.options.map((option) => (
+                                        <div
+                                          className={getOptionClasses(
+                                            option.selected
+                                          )}
+                                          data-choice-group="food-preference"
+                                          key={option.id}
+                                        >
+                                          {option.optionContent}
+                                          {option.additionalPrice > 0 &&
+                                            ` $${option.additionalPrice}`}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                  <div>
+                                    {foodPreference.options &&
+                                      foodPreference.options.filter(
+                                        (o) =>
+                                          o.selected && o.additionalPrice > 0
+                                      ).length > 0 &&
+                                      "$" +
+                                        foodPreference.options.filter(
+                                          (o) =>
+                                            o.selected && o.additionalPrice > 0
+                                        )[0].additionalPrice}
+                                  </div>
+                                </div>
+                              )
+                            )}
+                        </div>
+                      )
+                    )}
                   {order.foodPreferences &&
                     order.foodPreferences.map((foodPreference) => (
                       <div

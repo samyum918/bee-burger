@@ -10,7 +10,8 @@ interface CartItemProps {
   selectFoodPreference: (
     item: CartItemIf,
     foodPreferenceIndex: number,
-    optionIndex: number
+    optionIndex: number,
+    foodSelectionCategoryIndex?: number
   ) => void;
 }
 
@@ -29,10 +30,16 @@ const CartItem: FC<CartItemProps> = (props) => {
   function selectFoodPreferenceOnEdit(
     item: CartItemIf,
     foodPreferenceIndex: number,
-    optionIndex: number
+    optionIndex: number,
+    foodSelectionCategoryIndex?: number
   ) {
     if (item.editing) {
-      props.selectFoodPreference(item, foodPreferenceIndex, optionIndex);
+      props.selectFoodPreference(
+        item,
+        foodPreferenceIndex,
+        optionIndex,
+        foodSelectionCategoryIndex
+      );
     }
   }
 
@@ -54,7 +61,7 @@ const CartItem: FC<CartItemProps> = (props) => {
             </div>
           </div>
         </div>
-        {props.item.foodPreferences && (
+        {(props.item.foodSelectionCategories || props.item.foodPreferences) && (
           <div
             className="bg-black rounded-xl p-2 cursor-pointer mr-2 h-fit"
             onClick={() => props.editItem(props.item)}
@@ -77,6 +84,70 @@ const CartItem: FC<CartItemProps> = (props) => {
           className={getFoodPreferenceclasses(props.item.editing)}
           data-edit="cart-item"
         >
+          {props.item.foodSelectionCategories &&
+            props.item.foodSelectionCategories.map(
+              (foodSelectionCategory, foodSelectionCategoryIndex) => (
+                <div key={foodSelectionCategoryIndex}>
+                  {foodSelectionCategory.foodItemSelected && (
+                    <div className="flex justify-between text-sm">
+                      <div>{foodSelectionCategory.foodItemSelected.name}</div>
+                      <div>$0</div>
+                    </div>
+                  )}
+                  {foodSelectionCategory.foodItemSelected &&
+                    foodSelectionCategory.foodItemSelected.foodPreferences &&
+                    foodSelectionCategory.foodItemSelected.foodPreferences.map(
+                      (foodPreference, foodPreferenceIndex) => (
+                        <div
+                          className="mt-2 flex justify-between"
+                          key={foodPreference.id}
+                        >
+                          <div>
+                            <div className="mb-2">
+                              {foodPreference.question}
+                            </div>
+                            <div className="flex flex-wrap text-food-item-price text-sm">
+                              {foodPreference.options.map(
+                                (option, optionIndex) => (
+                                  <div
+                                    className={getOptionClasses(
+                                      option.selected
+                                    )}
+                                    data-choice-group="food-preference"
+                                    key={option.id}
+                                    onClick={() =>
+                                      selectFoodPreferenceOnEdit(
+                                        props.item,
+                                        foodPreferenceIndex,
+                                        optionIndex,
+                                        foodSelectionCategoryIndex
+                                      )
+                                    }
+                                  >
+                                    {option.optionContent}
+                                    {option.additionalPrice > 0 &&
+                                      ` $${option.additionalPrice}`}
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </div>
+                          <div>
+                            {foodPreference.options &&
+                              foodPreference.options.filter(
+                                (o) => o.selected && o.additionalPrice > 0
+                              ).length > 0 &&
+                              "$" +
+                                foodPreference.options.filter(
+                                  (o) => o.selected && o.additionalPrice > 0
+                                )[0].additionalPrice}
+                          </div>
+                        </div>
+                      )
+                    )}
+                </div>
+              )
+            )}
           {props.item.foodPreferences &&
             props.item.foodPreferences.map(
               (foodPreference, foodPreferenceIndex) => (

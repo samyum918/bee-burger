@@ -12,6 +12,7 @@
     "@types/react-dom": "^17.0.12",
     "axios": "^0.26.0",
     "cogo-toast": "^4.2.3",
+    "lodash": "^4.17.21",
     "msw": "^0.39.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -24,7 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --coverage",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .ts"
   },
@@ -47,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.181",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",
     "autoprefixer": "^10.4.2",

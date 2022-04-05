@@ -7,8 +7,8 @@ import { useState } from "react";
 import { CartContext, SubmittedOrderContext } from "../context/Context";
 import { CartItemIf, OrderIf } from "../common/types";
 import PageNotFound from "../pages/PageNotFound";
-import foodItemsService from "../services/foodItemsService";
-import httpService from "../services/httpService";
+import foodItemsService from "../services/foodItems.service";
+import httpService from "../services/http.service";
 
 const Layout = () => {
   const [cart, setCart] = useState<CartItemIf[]>([]);
@@ -46,11 +46,18 @@ const Layout = () => {
           foodId: c.foodId,
           quantity: c.quantity,
           totalPrice: c.totalPrice,
-          foodOptions:
+          subCategoryFoods: c.foodSelectionCategories?.map((c) => {
+            return {
+              foodId: c.foodItemSelected!.id,
+              foodOptionIds:
+                c.foodItemSelected!.foodPreferences?.map((p) => {
+                  return p.options.filter((o) => o.selected)[0].id;
+                }) || [],
+            };
+          }),
+          foodOptionIds:
             c.foodPreferences?.map((p) => {
-              return {
-                optionId: p.options.filter((o) => o.selected)[0].id,
-              };
+              return p.options.filter((o) => o.selected)[0].id;
             }) || [],
         };
       }),
@@ -58,6 +65,7 @@ const Layout = () => {
     try {
       await foodItemsService.submitOrder(order);
       setSubmittedOrder([...submittedOrder, ...cart]);
+      emptyCartItem();
     } catch (ex) {
       httpService.handleApiError(ex);
     }

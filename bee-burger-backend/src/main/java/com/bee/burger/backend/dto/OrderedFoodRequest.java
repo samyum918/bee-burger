@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -16,5 +17,6 @@ public class OrderedFoodRequest {
     Integer foodId;
     Integer quantity;
     BigDecimal totalPrice;
-    Set<OrderedFoodOptionsRequest> foodOptions;
+    Set<OrderedSubCategoryFood> subCategoryFoods = new HashSet<>();
+    Integer[] foodOptionIds;
 }

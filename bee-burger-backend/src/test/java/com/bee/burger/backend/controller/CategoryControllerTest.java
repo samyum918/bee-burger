@@ -1,6 +1,6 @@
 package com.bee.burger.backend.controller;
 
-import com.bee.burger.backend.dto.CategoriesResponse;
+import com.bee.burger.backend.model.Category;
 import com.bee.burger.backend.repository.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +28,17 @@ public class CategoryControllerTest {
 
     @Test
     public void shouldCallGetCategoriesAPISuccessfully() throws Exception {
-        CategoriesResponse categorySet = new CategoriesResponse(1, "Set");
-        CategoriesResponse categoryFood = new CategoriesResponse(2, "Food");
+        Category categorySet = new Category();
+        categorySet.setId(1);
+        categorySet.setName("Set");
+        categorySet.setIsFoodSet(true);
 
-        when(categoryRepository.findAllCategories()).thenReturn(Arrays.asList(categorySet, categoryFood));
+        Category categoryFood = new Category();
+        categoryFood.setId(2);
+        categoryFood.setName("Food");
+        categoryFood.setIsFoodSet(false);
+
+        when(categoryRepository.findAll()).thenReturn(Arrays.asList(categorySet, categoryFood));
         mvc.perform(MockMvcRequestBuilders.get(GET_ALL_CATEGORIES_API).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("Set"));

@@ -21,7 +21,7 @@ public class FoodController {
     }
 
     @GetMapping("/get-food-set-items")
-    public List<FoodSetItemsResponse> getFoodSetItems() {
-        return foodService.getFoodSetItems();
+    public List<FoodSetItemsResponse> getFoodSetItems(@RequestParam @NotNull Integer catId) {
+        return foodService.getFoodSetItems(catId);
     }
 }

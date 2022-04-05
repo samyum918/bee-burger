@@ -22,6 +22,9 @@ public class FoodSet extends BaseModel {
     private String description;
     private String img;
     private BigDecimal price = BigDecimal.ZERO;
+    @ManyToOne
+    @JoinColumn(name="category_id", nullable = false)
+    private Category category;
     private Boolean display;
     private Boolean soldOut;
     private LocalDateTime updateTime;

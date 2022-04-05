@@ -2,13 +2,18 @@ import { FC, useState } from "react";
 import { FoodItemIf } from "../common/types";
 
 interface FoodItemProps {
+  foodItemIndex: number;
   foodItem: FoodItemIf;
+  selectCategoryFood?: (foodItemIndex: number, catId: number) => void;
   selectFoodPreference: (
     item: FoodItemIf,
     foodPreferenceIndex: number,
-    optionIndex: number
+    optionIndex: number,
+    isFromModal: boolean
   ) => void;
-  addToCart: (item: FoodItemIf) => void;
+  clickConfirmBtn: (item: FoodItemIf) => void;
+  confirmBtnName: string;
+  isFromModal: boolean;
 }
 
 const FoodItem: FC<FoodItemProps> = (props) => {
@@ -21,19 +26,52 @@ const FoodItem: FC<FoodItemProps> = (props) => {
   }
 
   function getFoodPreferenceSectionClasses() {
-    return showFoodPreference ? "" : "hidden";
+    const classes = "mt-2 ml-4 mb-3 pr-4";
+    return showFoodPreference ? classes : classes + " hidden";
+  }
+
+  function getConfirmBtnClasses() {
+    const classes =
+      "w-fit rounded-lg font-bold text-black text-sm bg-title-light-yellow px-4 py-1 mt-2";
+    if (disableClickConfirmBtn()) {
+      return classes + " opacity-40";
+    }
+    return classes;
+  }
+
+  function selectCategoryFood(foodItemIndex: number, catId: number) {
+    if (props.selectCategoryFood) {
+      props.selectCategoryFood(foodItemIndex, catId);
+    }
+  }
+
+  function disableClickConfirmBtn() {
+    if (!props.isFromModal) {
+      if (
+        props.foodItem.foodSelectionCategories &&
+        props.foodItem.foodSelectionCategories.length > 0
+      ) {
+        const unselectedItem = props.foodItem.foodSelectionCategories.find(
+          (c) => c.foodItemSelected == null
+        );
+        return unselectedItem != null;
+      }
+    }
+    return false;
   }
 
   function clickFoodItem() {
     if (
-      props.foodItem.foodPreferences &&
-      props.foodItem.foodPreferences.length > 0
+      (props.foodItem.foodPreferences &&
+        props.foodItem.foodPreferences.length > 0) ||
+      (props.foodItem.foodSelectionCategories &&
+        props.foodItem.foodSelectionCategories.length > 0)
     ) {
       if (!showFoodPreference) {
         setShowFoodPreference(true);
       }
     } else {
-      props.addToCart(props.foodItem);
+      props.clickConfirmBtn(props.foodItem);
     }
   }
 
@@ -52,9 +90,11 @@ const FoodItem: FC<FoodItemProps> = (props) => {
                 {props.foodItem.description}
               </div>
             </div>
-            <div className="text-food-item-price rounded-lg border border-food-item-price px-6 w-fit">
-              ${props.foodItem.price}
-            </div>
+            {!props.isFromModal && (
+              <div className="text-food-item-price rounded-lg border border-food-item-price px-6 w-fit">
+                ${props.foodItem.price}
+              </div>
+            )}
           </div>
           <div>
             <img
@@ -68,43 +108,72 @@ const FoodItem: FC<FoodItemProps> = (props) => {
         </div>
 
         <div className={getFoodPreferenceSectionClasses()}>
-          {props.foodItem.foodPreferences &&
-            props.foodItem.foodPreferences.map(
-              (foodPreference, foodPreferenceIndex) => (
-                <div className="mt-2 ml-4 mb-3 pr-4" key={foodPreference.id}>
-                  <div className="mb-3">
-                    <div className="mb-2">{foodPreference.question}</div>
-                    <div className="flex flex-wrap text-food-item-price text-sm">
-                      {foodPreference.options.map((option, optionIndex) => (
-                        <div
-                          className={getOptionClasses(option.selected)}
-                          data-choice-group="food-preference"
-                          key={option.id}
-                          onClick={() =>
-                            props.selectFoodPreference(
-                              props.foodItem,
-                              foodPreferenceIndex,
-                              optionIndex
-                            )
-                          }
-                        >
-                          {option.optionContent}
-                          {option.additionalPrice > 0 &&
-                            ` (+$${option.additionalPrice})`}
-                        </div>
-                      ))}
-                    </div>
+          {props.foodItem.foodSelectionCategories &&
+            props.foodItem.foodSelectionCategories.map(
+              (foodSelectionCategory) => (
+                <div
+                  className="flex justify-between mb-3"
+                  key={foodSelectionCategory.id}
+                  onClick={() =>
+                    selectCategoryFood(
+                      props.foodItemIndex,
+                      foodSelectionCategory.id
+                    )
+                  }
+                >
+                  <div>
+                    {foodSelectionCategory.foodItemSelected
+                      ? foodSelectionCategory.foodItemSelected.name
+                      : foodSelectionCategory.name}
                   </div>
-                  <button
-                    type="button"
-                    className="w-fit rounded-lg font-bold text-black text-sm bg-title-light-yellow px-4 py-1 mt-2"
-                    onClick={() => props.addToCart(props.foodItem)}
-                  >
-                    Add Cart
-                  </button>
+                  <div className="flex justify-between items-center">
+                    <img
+                      src="/img/right_arrow.png"
+                      alt="right_arrow"
+                      width="7"
+                      height="14"
+                    />
+                  </div>
                 </div>
               )
             )}
+          {props.foodItem.foodPreferences &&
+            props.foodItem.foodPreferences.map(
+              (foodPreference, foodPreferenceIndex) => (
+                <div className="mb-3" key={foodPreference.id}>
+                  <div className="mb-2">{foodPreference.question}</div>
+                  <div className="flex flex-wrap text-food-item-price text-sm">
+                    {foodPreference.options.map((option, optionIndex) => (
+                      <div
+                        className={getOptionClasses(option.selected)}
+                        data-choice-group="food-preference"
+                        key={option.id}
+                        onClick={() =>
+                          props.selectFoodPreference(
+                            props.foodItem,
+                            foodPreferenceIndex,
+                            optionIndex,
+                            props.isFromModal
+                          )
+                        }
+                      >
+                        {option.optionContent}
+                        {option.additionalPrice > 0 &&
+                          ` (+$${option.additionalPrice})`}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )
+            )}
+          <button
+            type="button"
+            className={getConfirmBtnClasses()}
+            onClick={() => props.clickConfirmBtn(props.foodItem)}
+            disabled={disableClickConfirmBtn()}
+          >
+            {props.confirmBtnName}
+          </button>
         </div>
       </div>
     </div>

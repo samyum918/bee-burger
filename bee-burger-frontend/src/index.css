@@ -24,6 +24,10 @@
   height: 173px;
 }
 
+.screen-max-width {
+  max-width: 428px;
+}
+
 .desc-max-width {
   max-width: 240px;
 }

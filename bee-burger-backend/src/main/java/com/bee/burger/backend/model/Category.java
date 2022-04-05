@@ -13,4 +13,5 @@ import javax.persistence.*;
 public class Category extends BaseModel {
     @Column(name = "name", nullable = false)
     private String name;
+    private Boolean isFoodSet;
 }

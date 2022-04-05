@@ -1,6 +1,6 @@
 package com.bee.burger.backend.controller;
 
-import com.bee.burger.backend.dto.CategoriesResponse;
+import com.bee.burger.backend.model.Category;
 import com.bee.burger.backend.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ public class CategoryController {
     CategoryRepository categoryRepository;
 
     @GetMapping("/all")
-    public List<CategoriesResponse> getCategories() {
-        return categoryRepository.findAllCategories();
+    public List<Category> getCategories() {
+        return categoryRepository.findAll();
     }
 }

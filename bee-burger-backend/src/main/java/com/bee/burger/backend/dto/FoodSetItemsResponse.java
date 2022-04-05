@@ -18,5 +18,5 @@ public class FoodSetItemsResponse {
     private String description;
     private String img;
     private BigDecimal price;
-    private List<Integer> categorySectionIds;
+    private List<FoodSelectionCategoriesResponse> foodSelectionCategories;
 }

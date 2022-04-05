@@ -37,14 +37,15 @@ public class FoodService {
         }).collect(Collectors.toList());
     }
 
-    public List<FoodSetItemsResponse> getFoodSetItems() {
-        List<FoodSet> foodSetList = foodSetRepository.findAll();
+    public List<FoodSetItemsResponse> getFoodSetItems(Integer catId) {
+        List<FoodSet> foodSetList = foodSetRepository.findAllByCategory_Id(catId);
         return foodSetList.stream().map(fs -> {
             FoodSetItemsResponse responseItem = ProjectUtils.transformFrom(fs,
-                    FoodSetItemsResponse.class, "categorySectionIds");
-            responseItem.setCategorySectionIds(
+                    FoodSetItemsResponse.class, "foodSelectionCategories");
+            responseItem.setFoodSelectionCategories(
                     fs.getFoodSetItemCategorySet().stream()
-                            .map(cs -> cs.getCategory().getId())
+                            .map(cs -> ProjectUtils.transformFrom(cs.getCategory(),
+                                    FoodSelectionCategoriesResponse.class))
                             .collect(Collectors.toList())
             );
             return responseItem;

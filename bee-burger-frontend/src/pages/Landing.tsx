@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import customerService from "../services/customerService";
-import httpService from "../services/httpService";
+import customerService from "../services/customer.service";
+import httpService from "../services/http.service";
 
 const Landing = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [seatNo, setSeatNo] = useState("");
 
   useEffect(() => {

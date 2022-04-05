@@ -4,10 +4,10 @@ import CartItem from "../components/CartItem";
 import { CartItemIf } from "../common/types";
 import { CartContext, SubmittedOrderContext } from "../context/Context";
 import { useNavigate } from "react-router-dom";
+import CalcUtil from "../utils/CalcUtil";
 
 const ConfirmOrder = () => {
-  const { cart, updateCartItem, deleteCartItem, emptyCartItem } =
-    useContext(CartContext);
+  const { cart, updateCartItem, deleteCartItem } = useContext(CartContext);
   const { submitCart } = useContext(SubmittedOrderContext);
   const navigate = useNavigate();
 
@@ -16,8 +16,11 @@ const ConfirmOrder = () => {
     const index = cartCopy.indexOf(item);
     const targetItem = cartCopy[index];
     targetItem.quantity++;
-    targetItem.totalPrice =
-      (targetItem.price + targetItem.additionalPrice) * targetItem.quantity;
+    targetItem.totalPrice = CalcUtil.calcTotalPrice(
+      targetItem.price,
+      targetItem.additionalPrice,
+      targetItem.quantity
+    );
     updateCartItem(index, targetItem);
   }
 
@@ -27,8 +30,11 @@ const ConfirmOrder = () => {
     const targetItem = cartCopy[index];
     if (targetItem.quantity > 1) {
       targetItem.quantity--;
-      targetItem.totalPrice =
-        (targetItem.price + targetItem.additionalPrice) * targetItem.quantity;
+      targetItem.totalPrice = CalcUtil.calcTotalPrice(
+        targetItem.price,
+        targetItem.additionalPrice,
+        targetItem.quantity
+      );
       updateCartItem(index, targetItem);
     }
   }
@@ -50,12 +56,18 @@ const ConfirmOrder = () => {
   function selectFoodPreference(
     item: CartItemIf,
     foodPreferenceIndex: number,
-    optionIndex: number
+    optionIndex: number,
+    foodSelectionCategoryIndex?: number
   ) {
     const cartCopy = [...cart];
     const index = cartCopy.indexOf(item);
     const targetItem = cartCopy[index];
-    const foodPreferences = targetItem.foodPreferences;
+    const foodPreferences =
+      typeof foodSelectionCategoryIndex === "number"
+        ? targetItem.foodSelectionCategories![foodSelectionCategoryIndex]
+            .foodItemSelected!.foodPreferences
+        : targetItem.foodPreferences;
+
     if (foodPreferences) {
       const options = foodPreferences[foodPreferenceIndex].options;
       if (options) {
@@ -73,15 +85,17 @@ const ConfirmOrder = () => {
         }
       }
     }
-    targetItem.totalPrice =
-      (targetItem.price + targetItem.additionalPrice) * targetItem.quantity;
+    targetItem.totalPrice = CalcUtil.calcTotalPrice(
+      targetItem.price,
+      targetItem.additionalPrice,
+      targetItem.quantity
+    );
 
     updateCartItem(index, cartCopy[index]);
   }
 
   function confirmOrder() {
     submitCart();
-    emptyCartItem();
     navigate("/order-summary");
   }
 
@@ -105,13 +119,13 @@ const ConfirmOrder = () => {
           )}
           {cart.map((item, index) => (
             <CartItem
+              key={index}
               item={item}
               addQuantity={addQuantity}
               substractQuantity={substractQuantity}
               editItem={editItem}
               deleteItem={deleteItem}
               selectFoodPreference={selectFoodPreference}
-              key={index}
             />
           ))}
         </div>

@@ -21,5 +21,6 @@ public class FoodPreferenceOption extends BaseModel {
     private Integer optionNo;
     private String optionContent;
     private BigDecimal additionalPrice = BigDecimal.ZERO;
+    private Boolean defaultOption;
     private LocalDateTime updateTime;
 }
