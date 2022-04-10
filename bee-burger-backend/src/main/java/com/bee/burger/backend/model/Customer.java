@@ -1,6 +1,5 @@
 package com.bee.burger.backend.model;
 
-import com.bee.burger.backend.model.base.BaseModel;
 import com.bee.burger.backend.model.base.BaseModelUUID;
 import lombok.Getter;
 import lombok.Setter;

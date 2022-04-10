@@ -4,7 +4,7 @@ import customerService from "../services/customer.service";
 import httpService from "../services/http.service";
 
 const Landing = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [canProceed, setCanProceed] = useState(false);
   const [seatNo, setSeatNo] = useState("");
 
   useEffect(() => {
@@ -14,13 +14,13 @@ const Landing = () => {
         if (res.data) {
           setSeatNo(res.data.seatNo);
           sessionStorage.setItem("customerInfo", JSON.stringify(res.data));
+          setCanProceed(true);
         }
       })
       .catch((ex) => {
+        sessionStorage.removeItem("customerInfo");
         httpService.handleApiError(ex);
-      })
-      .finally(() => {
-        setIsLoading(false);
+        setCanProceed(false);
       });
   }, []);
 
@@ -52,7 +52,16 @@ const Landing = () => {
             </div>
           </div>
         </div>
-        {isLoading ? (
+        {canProceed ? (
+          <Link className="w-full" to="/food-items">
+            <button
+              type="button"
+              className="w-full rounded-xl font-bold text-black bg-title-light-yellow h-11"
+            >
+              Start to order
+            </button>
+          </Link>
+        ) : (
           <button
             type="button"
             className="w-full inline-flex justify-center items-center h-11 font-semibold leading-6 shadow rounded-xl text-black bg-title-light-yellow transition ease-in-out duration-150 cursor-not-allowed"
@@ -80,15 +89,6 @@ const Landing = () => {
             </svg>
             Processing...
           </button>
-        ) : (
-          <Link className="w-full" to="/food-items">
-            <button
-              type="button"
-              className="w-full rounded-xl font-bold text-black bg-title-light-yellow h-11"
-            >
-              Start to order
-            </button>
-          </Link>
         )}
       </div>
     </div>
