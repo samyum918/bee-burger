@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>2021.0.2-SNAPSHOT</spring-cloud.version>
+		<flyway.version>7.15.0</flyway.version>
 		<jacoco.version>0.8.7</jacoco.version>
 	</properties>
 	<dependencies>
@@ -44,6 +45,11 @@
 			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>${flyway.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>

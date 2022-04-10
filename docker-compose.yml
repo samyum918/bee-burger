@@ -2,7 +2,7 @@ version: '3.0'
 services:
   beeburger:
     container_name: beeburger
-    build: .
+    build: ./bee-burger-backend
     ports:
       - 8091:8091
     depends_on:
@@ -20,3 +20,14 @@ services:
       MYSQL_DATABASE: pos
       MYSQL_USER: mysql_user
       MYSQL_PASSWORD: 123456
+  phpmyadmin:
+    container_name: pma
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: 123456
