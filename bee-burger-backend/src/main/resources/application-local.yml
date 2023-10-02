@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/pos
+    username: db_user
+    password: 123456
+
+logging:
+  path: ./logs
+  metrics-log-path: ./logs
